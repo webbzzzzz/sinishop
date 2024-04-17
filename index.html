@@ -13,31 +13,39 @@
     }
 
     body {
+        background-color: #131313;
         height: 100vh;
         margin: 0;
         display: flex;
         flex-direction: column;
     }
 
-    .btn-orange {
-        background-color: #e77809;
+    h5 {
         color: #ffffff;
     }
 
+    .card {
+        border: none;
+    }
+
+    .btn-orange {
+        background-color: #e77809;
+        color: #ffffff;
+        box-shadow: 0 0 4px 2px #e7780942;
+    }
+
     .glassmorpishm {
-        background: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(10px);
+        background: #6161612e;
         border-radius: 10px;
     }
 
     .sticky-bottom {
         width: 100%;
         padding: 15px 0;
-        background-color: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(10px);
+        background-color: #1e1e1ef5;
         z-index: 999;
-        position: fixed; /* Tambahkan properti position fixed */
-        bottom: 0; /* Taruh di bagian bawah */
+        position: fixed;
+        bottom: 0;
     }
 
     .search-container {
@@ -55,6 +63,13 @@
         padding: 10px;
         border: none;
         background: transparent;
+        color: #e77809;
+    }
+
+    .product-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
     }
   </style>
 
@@ -91,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
     return `
       <div class="col-md-4">
         <div class="card glassmorpishm mb-4 shadow-sm mb-5">
-          <img src="${product.image}" class="card-img-top" alt="${product.name}">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3C/svg%3E" class="product-img" data-src="${product.image}" alt="${product.name}">
           <div class="card-body">
             <h5 class="card-title">${product.name}</h5>
             <a href="${product.downloadLink}" class="btn btn-orange btn-block">Link Shopee</a>
@@ -105,6 +120,18 @@ document.addEventListener("DOMContentLoaded", function() {
   function renderProductList(productsToRender) {
     const productListHTML = productsToRender.map(createProductCard).join("");
     productList.innerHTML = productListHTML;
+    lazyLoadImages();
+  }
+
+  // Lazy loading gambar
+  function lazyLoadImages() {
+    const images = document.querySelectorAll('img[data-src]');
+    images.forEach(img => {
+      img.setAttribute('src', img.getAttribute('data-src'));
+      img.onload = () => {
+        img.removeAttribute('data-src');
+      };
+    });
   }
 
   // Memfilter daftar produk berdasarkan pencarian
