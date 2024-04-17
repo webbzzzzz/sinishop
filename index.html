@@ -1,11 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sini Shop</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+    body {
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btn-orange {
+        background-color: #e77809;
+        color: #ffffff;
+    }
+
+    .glassmorpishm {
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+    }
+
+    .sticky-bottom {
+        width: 100%;
+        padding: 15px 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 999;
+        position: fixed; /* Tambahkan properti position fixed */
+        bottom: 0; /* Taruh di bagian bawah */
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        max-width: 600px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: #e77809 2px solid;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        background: transparent;
+    }
+  </style>
+
 </head>
 <body>
-    <main></main>
+
+<div class="container">
+  <div id="product-list" class="row mt-5 mb-5">
+    <!-- Product cards will be added here -->
+  </div>
+</div>
+
+<div class="sticky-bottom">
+    <div class="search-container glassmorpishm">
+        <input type="text" id="searchInput" class="search-input" placeholder="cari nomor produk...">
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const productList = document.getElementById("product-list");
+  const searchInput = document.getElementById("searchInput");
+
+  // Data produk dalam format JSON
+  const products = [
+    { id: 1, name: "Product 1", image: "img/test.jpg", downloadLink: "#" },
+    { id: 2, name: "Product 2", image: "https://via.placeholder.com/150", downloadLink: "#" },
+    { id: 3, name: "Product 3", image: "https://via.placeholder.com/150", downloadLink: "#" }
+    // Anda dapat menambahkan produk lainnya di sini
+  ];
+
+  // Fungsi untuk membuat card produk
+  function createProductCard(product) {
+    return `
+      <div class="col-md-4">
+        <div class="card glassmorpishm mb-4 shadow-sm mb-5">
+          <img src="${product.image}" class="card-img-top" alt="${product.name}">
+          <div class="card-body">
+            <h5 class="card-title">${product.name}</h5>
+            <a href="${product.downloadLink}" class="btn btn-orange btn-block">Link Shopee</a>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Menampilkan daftar produk
+  function renderProductList(productsToRender) {
+    const productListHTML = productsToRender.map(createProductCard).join("");
+    productList.innerHTML = productListHTML;
+  }
+
+  // Memfilter daftar produk berdasarkan pencarian
+  function filterProductList() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchTerm));
+    renderProductList(filteredProducts);
+  }
+
+  // Memanggil fungsi untuk menampilkan daftar produk saat halaman dimuat
+  renderProductList(products);
+
+  // Memanggil fungsi untuk memfilter daftar produk saat input pencarian berubah
+  searchInput.addEventListener("input", filterProductList);
+});
+
+</script>
 </body>
 </html>
